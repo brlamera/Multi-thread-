@@ -1,0 +1,25 @@
+#
+#	"Magnifique exemple"
+#
+
+window:{1000x8000}
+
+<SCN_scene>
+
+	<camera(s)>
+		camera_1: origine{0.0 0.0 00.0} rotation{00.0 00.0 00.0}
+	</camera(s)>
+
+	<lightspot(s)>
+//		sphere: origine{-6.0 0.0 5.0} rayon(3.0) couleur(0x33836F) emission(0.23)	
+		sphere: origine{5 0 0} rayon(30.0) couleur(0xFFFFFF) emission(0.9)
+	</lightspot(s)>
+
+	<objet(s)>
+		
+		triangle: o1{5.0 5.0 -30} o2{10 5 -30} o3{7.5 7.5 -30} couleur(0xff0000) reflexion(0.2) opacity(0.1)
+		sphere: origine{0.0 0.0 -20.0} rayon(4.0) couleur(0xFF6000) reflexion(0.2) opacity(0.99)
+		sphere: origine{-5.0 0.0 -50.0} rayon(14.0) couleur(0x009900) reflexion(0.2) opacity(0.4)
+		sphere: origine{5.0 -3.0 -15.0} rayon(3.0) couleur(0x3f00ff) reflexion(0.1) opacity(0.3)
+	</objet(s)>
+</SCN_scene>

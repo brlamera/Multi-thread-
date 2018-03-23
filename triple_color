@@ -1,0 +1,31 @@
+color_1				color_2					color_3
+
+opacitee					reflexion
+
+
+
+
+
+
+REFLEXION					TRANSPARENCE							COLOR
+
+
+step 1 = calcul du pourcentage de couleur de la sphere a garder
+
+0.40								0.60						0.40 * 0.60 = 0.24		(0.40 + 0.60) / 2 = 0.5
+0.0									0.99						1.00 * 0.01 = 0.01		(1 + 0.01) / 2    = 0.5
+0.9									0.90						0.1 * 0.1 = 0.01;		(0.1 + 0.1) / 2   = 0.1
+
+step 2 = moyenne de couleur a faire
+
+0.4 / (0.4 + 0.6 + 0.24) = 0.323	0.6 / (0.4 + 0.6 + 0.24) = 0.484	0.24 / (0.4 + 0.6 + 0.24) = 0.194
+0.0 / (0 + 0.99 + 0.01)  = 0		0.99 / (0 + 0.99 + 0.01) = 0.99		0.01 / (0 + 0.99 + 0.01) = 0.01
+0.9 / (0.9 + 0.9 + 0.01) = 0.497	0.9 / (0.9 + 0.9 + 0.01) = 0.497	0.01 / (0.9 + 0.9 + 0.01) = 0.0056
+
+step 3 = decomposer et caluculer la couleur finale (avec R G B separement)
+
+color = R * 0.323 + T * 0.484 + C * 0.194 * R<-(a remplacer par la moyenne de l'eclairage)
+color = R * 0.000 + T * 0.990 + C * 0.010 * R
+color = R * 0.497 + T * 0.497 + C * 0.005 * R
+
+

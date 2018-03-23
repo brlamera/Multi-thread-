@@ -1,0 +1,456 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   rt_parser.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: juthomas <juthomas@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2017/11/16 03:23:06 by juthomas          #+#    #+#             */
+/*   Updated: 2017/12/18 05:51:53 by juthomas         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "../includes/rt.h"
+
+int		rt_parser_no_space(char *str, int i)
+{
+	while (str[i] != '\0' && (str[i] == ' ' || str[i] == '\t'))
+		i++;
+	printf("space = %d\n", i);
+	return (i);
+}
+
+int		rt_parser_balise_name(char *str, int i, int *state)
+{
+	if (ft_strncmp(&str[i], "SCN", 3) == 0)
+	{
+		printf("//////////////////////////////////////////yolo\n");
+		*state = 4;
+	}
+	else if (ft_strncmp(&str[i], "/", 1) == 0)
+	{
+		printf(":::::::::::::::::::::::::::::::::::::END OF BALISE\n");
+		*state = 0;
+	}
+	else if (ft_strncmp(&str[i], "camera(s)", 9) == 0)
+	{
+		*state = 1;
+	}
+	else if (ft_strncmp(&str[i], "lightspot(s)", 12) == 0)
+	{
+		*state = 2;
+	}
+	else if (ft_strncmp(&str[i], "objet(s)", 8) == 0)
+	{
+		*state = 3;
+	}
+	else
+		printf("....................................NEW BALISE\n");
+	while (str[i] != '>' && str[i] != '\0')
+		i++;
+	printf("len = %d\n", i);
+//	printf("yola\n");
+	return (i);
+}
+
+int		rt_parser_go_next_number(char *str, int i)
+{
+	int		tmp;
+	
+	tmp = i;
+	while (((str[tmp] >= '0' && str[tmp] <= '9') || str[tmp] == '.' || str[tmp] == '-'))
+		tmp++;
+	printf("|||||||||||||||||| %c ||||||||||||||", str[tmp]);
+	if (str[tmp] != ' ' && str[tmp] != '}' && tmp == i)
+		return (-1);
+	while (str[tmp] == ' ')
+		tmp++;
+	printf("\n\n\n\n\n");
+	if (!((str[i] >= '0' && str[i] <= '9') || str[i] == '-' || str[i] == '}'))
+		return (-1);
+	return (tmp);
+}
+
+int		rt_parser_stock_vec(char *str, t_vec *vec, int *nb, int dec)
+{
+	int		i;
+	int		nu_of_params;
+//	t_vec	*vec;
+
+//	if ((vec = (t_vec*)malloc(sizeof(*vec))) == NULL)
+//		exit(-1);
+	nu_of_params = 0;
+	i = *nb + dec;
+	while (str[i] != '\0' && ((str[i] >= '0' && str[i] <= '9') || str[i] == '.' || str[i] == ' ' || str[i] == '-'))
+	{
+//		vec->x = ft_adolphe(&str[i]);
+		if (nu_of_params == 0)
+		{
+			vec->x = ft_adolphe(&str[i]);
+			printf("@@@@@@ vec->x %f\n", ft_adolphe(&str[i]));
+		}
+		else if (nu_of_params == 1)
+		{
+			vec->y = ft_adolphe(&str[i]);
+			printf("@@@@@@ vec->y %f\n", ft_adolphe(&str[i]));
+		}
+		else if (nu_of_params == 2)
+		{
+			vec->z = ft_adolphe(&str[i]);
+			printf("@@@@@@ vec->z %f\n", ft_adolphe(&str[i]));
+		}
+		if ((i = rt_parser_go_next_number(str, i)) == -1)
+			printf("\n!!!!!!!!!!!!!!failure!!!!!!!!!!!!!!!\n");
+		nu_of_params++;
+		//i++;
+	}
+	printf("voilaaaaa :::: %c :::::", str[i]);
+	printf("nu_of_params %d\n", nu_of_params);
+	*nb = i + 1;
+	if (str[i] != '}' || nu_of_params != 3)
+		return (-1);
+//	ret = vec;
+
+	printf("vector stocked X:%f\n", vec->x);
+	printf("vector stocked Y:%f\n", vec->y);
+	printf("vector stocked Z:%f\n", vec->z);
+	return (0);
+}
+
+int		rt_parser_is_correct(char *str, char *ac, int len)
+{
+	int		i;
+	int		u;
+	int		lenac;
+	int		ok;
+
+	ok = 1;
+	u = 0;
+	i = 0;
+	lenac = ft_strlen(ac);
+	while (i < len)
+	{
+		ok = 1;
+		u = 0;
+		while (u < lenac && ok)
+		{
+			if (str[i] == ac[u])
+				ok = 0;
+			u++;
+		}
+		if (ok)
+			return (0);
+		i++;
+	}
+	return (1);
+}
+
+int		rt_parser_stock_color(char *str, t_vec *vec, int *nb, int dec)
+{
+	int				i;
+	int				nu_of_params;
+	unsigned int	color;
+//	t_vec	*vec;
+
+//	if ((vec = (t_vec*)malloc(sizeof(*vec))) == NULL)
+//		exit(-1);
+	nu_of_params = 0;
+	i = *nb + dec;
+	if (ft_strncmp(&str[i], "0X", 2) && rt_parser_is_correct(&str[i + 2], "0123456789ABCDEF", 6))
+	{
+		color = ft_atoi_base(&str[i + 2], "0123456789ABCDEF");
+		printf("la couleur :%x\n", ft_atoi_base(&str[i + 2], "0123456789ABCDEF"));
+	}
+	else if (ft_strncmp(&str[i], "0x", 2) && rt_parser_is_correct(&str[i + 2], "0123456789ABCDEF", 6))
+	{
+		color = ft_atoi_base(&str[i + 2], "0123456789ABCDEF");
+		printf("la couleur :%x\n", ft_atoi_base(&str[i + 2], "0123456789ABCDEF"));
+	}
+	else if (ft_strncmp(&str[i], "0X", 2) && rt_parser_is_correct(&str[i + 2], "0123456789abcdef", 6))
+	{
+		color = ft_atoi_base(&str[i + 2], "0123456789abcdef");
+		printf("la couleur :%x\n", ft_atoi_base(&str[i + 2], "0123456789abcdef"));
+	}
+	else if (ft_strncmp(&str[i], "0x", 2) && rt_parser_is_correct(&str[i + 2], "0123456789abcdef", 6))
+	{
+		color = ft_atoi_base(&str[i + 2], "0123456789abcdef");
+		printf("la couleur :%x\n", ft_atoi_base(&str[i + 2], "0123456789abcdef"));
+	}
+	else
+		return (-1);
+
+//printf("la couleur :%x\n"
+	printf("la couleur stocked:%x\n", color);
+
+	printf("PUUUUUTTTEUUUH \"%s\"\n", &str[i + 2]);
+	if (str[i + 8] != ')')
+		return (-1);
+	vec->x = color / 256 / 256 % 256;
+	vec->y = color / 256 % 256;
+	vec->z = color % 256;
+	if (NORM_COLOR == 1)
+	{
+		vec->x /= 255;
+		vec->y /= 255;
+		vec->z /= 255;
+	}
+	
+	printf("la couleur stocked R:%f\n", vec->x);
+	printf("la couleur stocked G:%f\n", vec->y);
+	printf("la couleur stocked B:%f\n", vec->z);
+	
+	*nb = i + 9;
+	return (0);
+}
+
+
+int		rt_parser_go_next_number_2(char *str, int i)
+{
+	int		tmp;
+	
+	tmp = i;
+	while (((str[tmp] >= '0' && str[tmp] <= '9') || str[tmp] == '.' || str[tmp] == '-'))
+		tmp++;
+	printf("|||||||||||||||||| %c ||||||||||||||", str[tmp]);
+	if (str[tmp] != ' ' && str[tmp] != ')' && tmp == i)
+		return (-1);
+	while (str[tmp] == ' ')
+		tmp++;
+	printf("\n\n\n\n\n");
+	if (!((str[i] >= '0' && str[i] <= '9') || str[i] == '-' || str[i] == ')'))
+		return (-1);
+	return (tmp);
+}
+
+
+
+
+int		rt_parser_stock_number(char *str, float *nu, int *nb, int dec)
+{
+	int		i;
+	int		tmp;
+
+	i = *nb + dec;
+	tmp = i;
+
+	if ((i = rt_parser_go_next_number_2(str, i)) == -1)
+		exit(-1);
+	*nu = ft_adolphe(&str[tmp]);
+	printf("number stocked == %f\n", *nu);
+	*nb = i + 1;
+
+	return (0);
+}
+
+int		stock_psher(t_spher *spher, char *str, int *nb)
+{
+	int		state;
+	int		i;
+
+	state = -1;
+	i = *nb;
+
+//	printf("str == \"%s\"", &str[i]);
+	if (ft_strncmp(&str[i], "Origine{", 8) == 0 || ft_strncmp(&str[i], "origine{", 8) == 0)
+		state = rt_parser_stock_vec(str, spher->pos, nb, 8);
+	else if (ft_strncmp(&str[i], "Rayon(", 6) == 0 || ft_strncmp(&str[i], "rayon(", 6) == 0)
+		state = rt_parser_stock_number(str, &spher->pspher->radius, nb, 6);
+	else if (ft_strncmp(&str[i], "Couleur(", 8) == 0 || ft_strncmp(&str[i], "couleur(", 8) == 0)
+		state = rt_parser_stock_color(str, spher->color, nb, 8);
+	else if (ft_strncmp(&str[i], "Reflexion(", 10) == 0 || ft_strncmp(&str[i], "reflexion(", 10) == 0)
+		state = rt_parser_stock_number(str, &spher->pspher->refl, nb, 10);
+	else if (ft_strncmp(&str[i], "Opacity(", 8) == 0
+			|| ft_strncmp(&str[i], "opacity(", 8) == 0)
+		state = rt_parser_stock_number(str, &spher->pspher->opac, nb, 8);
+	else
+		state = 1;
+
+
+
+
+
+
+	return (state);
+}
+
+void	rt_parser_objtype_pspher_setup(t_spher *spher)
+{
+	spher->pos->x = 0;
+	spher->pos->y = 0;
+	spher->pos->z = 0;
+	spher->color->x = 0;
+	spher->color->y = 0;
+	spher->color->z = 0;
+	spher->pspher->radius = 0;
+	spher->pspher->refl = 0;
+	spher->pspher->opac = 0;
+}
+
+char	rt_parser_objtype_pspher(char *str, void *addr, char type)
+{
+	int		i;
+	int		state;
+	t_spher		*spher;
+
+	state = 0;
+	i = 0;
+	if ((spher = (t_spher*)malloc(sizeof(*spher))) == NULL)
+		exit(-1);
+	if ((spher->pspher = (t_pspher*)malloc(sizeof(*spher->pspher))) == NULL)
+		exit(-1);
+	if ((spher->pos = (t_vec*)malloc(sizeof(*spher->pos))) == NULL)
+		exit(-1);
+	if ((spher->color = (t_vec*)malloc(sizeof(*spher->color))) == NULL)
+		exit(-1);
+	rt_parser_objtype_pspher_setup(spher);
+	while (str[i] != '\0' && state == 0)
+	{
+		i = rt_parser_no_space(str, i);
+
+
+			printf("{{{%s}}}\n\n", &str[i]);
+			if ((state = stock_psher(spher, str, &i)) == -1)
+				printf("\nexit\n");
+				//	exit(-1);
+	//	i++;
+	}
+
+
+
+	addr = spher;
+	return (type);
+}
+
+char	rt_parser_objtype(char *str,  void *addr)
+{
+	char	type;
+
+	if (ft_strncmp(str, "Sphere:", 7) == 0 || ft_strncmp(str, "sphere:", 7) == 0)
+		type = 's';
+	else if (ft_strncmp(str, "Cylindre", 8) == 0
+			|| ft_strncmp(str, "cylindre", 8) == 0)
+		type = 'c';
+	else if (ft_strncmp(str, "Cone", 4) == 0 || ft_strncmp(str, "cone", 4) == 0)
+		type = 'k';
+	else if (ft_strncmp(str, "Plan", 4) == 0 || ft_strncmp(str, "plan", 4) == 0)
+		type = 'p';
+	else if (ft_strncmp(str, "Triangle", 8) == 0
+			|| ft_strncmp(str, "triangle", 8) == 0)
+		type = 't';
+	else if (ft_strncmp(str, "Disque", 6) == 0
+			|| ft_strncmp(str, "disque", 6) == 0)
+		type = 'd';
+	else
+		type = 0;
+
+	return (type);
+}
+
+
+t_type	*rt_parser_objtype_done(char *str,  void *addr, char type)
+{
+	t_type *typ;
+
+
+	if ((typ = (t_type*)malloc(sizeof(*typ))) == NULL)
+		exit(-1);
+	if (type == 's')
+	{
+		typ->name = rt_parser_objtype_pspher(&str[7], typ->obj, 's');
+	}
+	printf("testtesttesttesttesttest %c\n", typ->name);
+	return (typ);
+}
+
+int		rt_parser_state(char *str, int state, int i)
+{
+	if (str[i] == '<')
+	{	
+		printf("hi\n");
+		i++;	
+		rt_parser_balise_name(str, i, &state);
+	}
+	return (state);
+}
+
+/*
+**		state == 0 : il ne se passe rien
+**		state == 1 : partie cameras
+**		state == 2 : partie lumieres
+**		state == 3 : partie objets
+**		state == 4 : nouvelle scene
+*/
+
+
+void	test_obj(t_list *list)
+{
+	t_type *type;
+
+	while (list)
+	{
+
+		if (list->content)
+		{
+			type = list->content;
+			printf("[[[[[[[[[[[[[[[[[[[[CONTENT]]]]]]]]]]]]]]]]]]]]]]]] = %c\n", type->name);
+
+		}
+		list = list->next;
+	}
+
+
+}
+
+t_type	*fonction_test(int i)
+{
+	t_type	 *type;
+
+	if ((type = (t_type*)malloc(sizeof(*type))) == 0)
+		exit(-1);
+		printf("parsed\n");
+	type->name = 'S';
+	return (type);
+}
+
+t_list	*rt_parser_main(int argc, char **argv)
+{
+	int		fd;
+	char*	line;
+	t_list	*list;
+	int		i;
+	int		state;
+	char	obj_name;
+	i = 0;
+	state = 0;
+	void	*obj;
+
+//	list = ft_lstnew_2()
+	list = ft_lstnew(0, 0);
+	fd = open(argv[1], O_RDONLY);
+	while (get_next_line(fd, &line) == 1)
+	{
+		i = 0;
+	//	state = 1;
+		i = rt_parser_no_space(line, i);
+		state = rt_parser_state(line, state, i);
+		if ((obj_name = rt_parser_objtype(&line[i], obj)) != 0)
+		{
+			
+			ft_lstadd(&list, ft_lstnew(fonction_test(i), sizeof(t_type*)));
+			//ft_lstadd(&list, ft_lstnew(rt_parser_objtype_done(&line[i],  obj, obj_name), sizeof(t_type*)));
+		}
+		printf("\nname = %c\n", obj_name);
+		if (state)
+		{
+			printf("\n\nstate = %d\n", state);
+			printf("{{{%s}}}\n\n", &line[i]);
+		}
+	}
+	test_obj(list);
+	return (list);
+}
+
+
+
+
+

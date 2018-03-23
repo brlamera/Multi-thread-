@@ -1,0 +1,21 @@
+#
+#	"Magnifique exemple"
+#
+
+window:{1000x8000}
+
+<SCN_scene>
+
+	<camera(s)>
+		camera_1: origine{0.0 0.0 00.0} rotation{00.0 00.0 00.0}
+	</camera(s)>
+
+	<lightspot(s)>
+		lsphere: origine{00.0 20.0 -30.0} rayon(3.0) couleur(0x33836F) emission(0.23)
+	</lightspot(s)>
+
+	<objet(s)>
+		sphere: origine{0.0 0.0 -20.0} rayon(50.0) couleur(0x33003F) reflexion(0.5) opacity(0.2)
+		sphere: origine{5.0 -3.0 -15.0} rayon(50.0) couleur(0x3300FF) reflexion(0.5) opacity(0.2)
+	</objet(s)>
+</SCN_scene>

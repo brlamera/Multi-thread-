@@ -1,0 +1,334 @@
+Type (obj + name) name = (s, c, k, d, t, p, S, C, K, D, T, P)
+{
+	//
+		BASIC OBJ
+	//
+
+	s:Sphere
+	{
+		Vec Position
+		{
+			X
+			Y
+			Z
+		}
+		Vec Color
+		{
+			R
+			G
+			B
+		}
+		Psphdi
+		{
+			Radius
+			Reflec
+			Oppacity
+		}
+	}
+
+	c:Cylindre(type pcycon)
+	{
+		Vec Position
+		{
+			X
+			Y
+			Z
+		}
+		Vec Rot(normalized)
+		{
+			X
+			Y
+			Z
+		}
+		Vec Color
+		{
+			R
+			G
+			B
+		}
+		Pcycon
+		{
+			Radius
+			Height
+			Reflec
+			Oppacity
+		}
+	}
+
+	k:Cone(type pcycon)
+	{
+		Vec Position
+		{
+			X
+			Y
+			Z
+		}
+		Vec Rot(normalized)
+		{
+			X
+			Y
+			Z
+		}
+		Vec Color
+		{
+			R
+			G
+			B
+		}
+		Pcycon
+		{
+			Radius
+			Height
+			Reflec
+			Oppacity
+		}
+	}
+
+	p:Plan
+	{
+		Vec Position
+		{
+			X
+			Y
+			Z
+		}
+		Vec Rot(normalized)
+		{
+			X
+			Y
+			Z
+		}
+		Vec Color
+		{
+			R
+			G
+			B
+		}
+		Pbasic
+		{
+			Reflec
+			Oppacity
+		}
+	}
+
+	t:Triangle
+	{
+		Vec Position1
+		{
+			X
+			Y
+			Z
+		}
+		Vec Position2
+		{
+			X
+			Y
+			Z
+		}
+		Vec Position3
+		{
+			X
+			Y
+			Z
+		}
+		Vec Color
+		{
+			R
+			G
+			B
+		}
+		Pbasic
+		{
+			Reflec
+			Oppacity
+		}
+	}
+
+	d:disque
+	{
+		Vec Position
+		{
+			X
+			Y
+			Z
+		}
+		Vec Rot(normalized)
+		{
+			X
+			Y
+			Z
+		}
+		Vec Color
+		{
+			R
+			G
+			B
+		}
+		Psphdi
+		{
+			Radius
+			Reflec
+			Oppacity
+		}
+	}
+
+	//
+		LIGHTNING OBJ
+	//
+
+	S:lSpher
+	{
+		Vec Position
+		{
+			X
+			Y
+			Z
+		}
+		Vec Color
+		{
+			R
+			G
+			B
+		}
+		lPsphdi
+		{
+			Radius
+			Emi
+		}
+	}
+
+	C:lCylindre(type pcycon)
+	{
+		Vec Position
+		{
+			X
+			Y
+			Z
+		}
+		Vec Rot(normalized)
+		{
+			X
+			Y
+			Z
+		}
+		Vec Color
+		{
+			R
+			G
+			B
+		}
+		lPcycon
+		{
+			Radius
+			Height
+			Emi
+		}
+	}
+
+	K:lCoen(type pcycon)
+	{
+		Vec Position
+		{
+			X
+			Y
+			Z
+		}
+		Vec Rot(normalized)
+		{
+			X
+			Y
+			Z
+		}
+		Vec Color
+		{
+			R
+			G
+			B
+		}
+		lPcycon
+		{
+			Radius
+			Height
+			Emi
+		}
+	}
+
+	P:lPlan
+	{
+		Vec Position
+		{
+			X
+			Y
+			Z
+		}
+		Vec Rot(normalized)
+		{
+			X
+			Y
+			Z
+		}
+		Vec Color
+		{
+			R
+			G
+			B
+		}
+		Emi
+	}
+
+	T:lTriangle
+	{
+		Vec Position1
+		{
+			X
+			Y
+			Z
+		}
+		Vec Position2
+		{
+			X
+			Y
+			Z
+		}
+		Vec Position3
+		{
+			X
+			Y
+			Z
+		}
+		Vec Color
+		{
+			R
+			G
+			B
+		}
+		Emi
+	}
+
+	D:lDisque
+	{
+		Vec Position
+		{
+			X
+			Y
+			Z
+		}
+		Vec Rot(normalized)
+		{
+			X
+			Y
+			Z
+		}
+		Vec Color
+		{
+			R
+			G
+			B
+		}
+		lPsphdi
+		{
+			Radius
+			Emi
+		}
+	}
+}

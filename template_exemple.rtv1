@@ -1,0 +1,53 @@
+#
+#	"Nom de scene" (Passer la ligne si # en x(n) y(0))
+#
+
+window:{HEIGHxWIDTH}
+
+<scene(x)>
+
+camera(s):
+	origine{coordonnees(x, y, z) en float}
+	rotation{(x y z) en float aussi, question de practicité}
+
+lightspot(s):
+	(l)objets -> + emission(x, en float)
+				 - reflexion(x, en float)
+				 - opacity(x, en float)
+
+objet(s): (6 choix possible : cylindre, cone, plan, sphere, disque, t_quelconque)
+	sphere: origine{coordonnees(x, y, z) en float} rayon(x, en float) couleur(0xXXXXXXXX) reflexion(x, en float) opacity(x, en float)
+	cylindre: origine{coordonnees(x, y, z) en float} rayon(x, en float) hauteur(x, en float) couleur(0xXXXXXX) reflexion(x, en float) opacity(x, en float)
+	cone: origine{coordonnees(x, y, z) en float} rayon(x, en float) hauteur(x, en float) couleur(0xXXXXXX) reflexion(x, en float) opacity(x, en float)
+	plan: origine{coordonnees(x, y, z) en float} couleur(0xXXXXXX) reflexion(x, en float) opacity(x, en float)
+	triangle: o1{coordonnees(x, y, z) en float} o2{coordonnees(x, y, z) en float} o3{coordonnees(x, y, z) en float} couleur(0xXXXXXX) reflexion(x, en float) opacity(x, en float)
+	disque: origine{coordonnees(x, y, z) en float} rayon(x, en float) couleur(0xXXXXXX) reflexion(x, en float) opacity(x, en float)
+	+
+		rotation{(x y z) en float aussi, question de practicité}
+
+</scene(x)>
+
+
+Exemple ->
+
+#
+#	"Magnifique exemple"
+#
+
+window:{1000x8000}
+
+<scene>
+
+camera(s):
+	camera_1: origine{50.0 20.0 00.0} rotation{00.0 00.0 00.0}
+
+lightspot(s):
+		lsphere: sphere: origine{200.0 700.0 520.0} rayon(50.0) couleur(0x33836F) emission(0.23)
+
+objet(s):
+	sphere: origine{50.0 20.0 00.0} rayon(50.0) couleur(0x33003F) reflexion(0.5) opacity(0.2)
+	cylindre: origine{50.0 20.0 00.0} rayon(78.0) hauteur(200.0) couleur(0xFF0000) opacity(0.8)
+		rotation:{90.0 80.0 10.0}
+	plan: couleur(0x000FF000)
+
+</scene>
